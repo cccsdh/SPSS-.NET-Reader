@@ -1,3 +1,5 @@
+![Build .NET 8](https://github.com/cccsdh/SPSS-.NET-Reader/actions/workflows/dotnet8.yml/badge.svg)
+
 # C# SPSS SAV file reader and writer library (updated for .NET 8)
 
 This repository contains a library that reads and writes SPSS data files (.sav). A set of .NET 8-compatible projects are provided in the `.net/` folder and are recommended for new development:

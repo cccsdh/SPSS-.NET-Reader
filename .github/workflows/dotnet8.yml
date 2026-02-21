@@ -37,3 +37,40 @@ jobs:
       run: |
         echo "Listing built project outputs in the .net folder"
         ls -R .net || true
+
+    - name: Compute package version
+      run: |
+        echo "Determining package version"
+        if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+          VERSION=${GITHUB_REF#refs/tags/}
+        else
+          VERSION="1.0.${GITHUB_RUN_NUMBER}"
+        fi
+        echo "PACKAGE_VERSION=$VERSION" >> $GITHUB_ENV
+
+    - name: Pack library (create NuGet package)
+      run: |
+        echo "Packing SpssLibNet8 project"
+        mkdir -p ./artifacts
+        echo "Using package version: $PACKAGE_VERSION"
+        dotnet pack .net/SpssLibNet8/SpssLibNet8.csproj -c Release -o ./artifacts /p:PackageVersion=$PACKAGE_VERSION --no-build
+
+    - name: Upload package artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: nuget-packages
+        path: ./artifacts/*.nupkg
+
+    - name: Publish packages to nuget.org
+      if: github.event_name != 'pull_request'
+      env:
+        NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+      run: |
+        if [ -z "$NUGET_API_KEY" ]; then
+          echo "NUGET_API_KEY not set; skipping publish.";
+          exit 0;
+        fi
+        for pkg in ./artifacts/*.nupkg; do
+          echo "Publishing $pkg";
+          dotnet nuget push "$pkg" -k "$NUGET_API_KEY" -s https://api.nuget.org/v3/index.json --skip-duplicate || true
+        done

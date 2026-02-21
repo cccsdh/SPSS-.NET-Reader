@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup>
+    <!-- Default package/version metadata for .NET 8 projects. This can be overridden by CI via /p:PackageVersion. -->
+    <Version>1.0.0</Version>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Authors>CCCS</Authors>
+    <Company>CCCS</Company>
+    <RepositoryUrl>https://github.com/cccsdh/SPSS-.NET-Reader</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>SPSS .NET Reader library and tools (net8)</Description>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+</Project>
