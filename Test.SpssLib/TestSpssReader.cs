@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Text;
+using CsvHelper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SpssLib.DataReader;
 using SpssLib.FileParser;
@@ -12,6 +16,57 @@ namespace Test.SpssLib
     [TestClass]
     public class TestSpssReader
     {
+        [TestMethod]
+        public void TestReadDFCUFile()
+        {
+            // Open file, can be read only and sequetial (for performance), or anything else
+            using (FileStream fileStream = new FileStream(@"C:\fakepath\LinnAreaCreditUnion-November2021_11_1_2024_Completed.sav", FileMode.Open, FileAccess.Read, FileShare.Read, 2048 * 10,
+                                                          FileOptions.SequentialScan))
+            {
+                // Create the reader, this will read the file header
+                SpssReader spssDataset = new SpssReader(fileStream);
+                var definitions = new List<ColumnDefinition>();
+
+                var sortedVariables = spssDataset.Variables.OrderBy(o=>o.Index).ToList();
+                // Iterate through all the varaibles
+                foreach (var variable in sortedVariables)
+                {
+                    var def = new ColumnDefinition();
+                    def.QuestionName = variable.Name;
+                    def.DestinationName = variable.Name;
+                    def.QuestionLabel = variable.Label;
+                    def.QuestionType = variable.Type.ToString();
+                    GetValues(def, variable);
+
+
+                    definitions.Add(def);
+
+                }
+
+                WriteListToCsv(definitions, "C:\\fakepath\\definitions.csv");
+            }
+        }
+        public static void WriteListToCsv(List<ColumnDefinition>list, string filePath)
+        {
+            using (var writer = new StreamWriter(filePath)) 
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture)) 
+            { csv.WriteRecords(list); }
+        }
+
+        void GetValues(ColumnDefinition def, Variable variable)
+        {
+            var text = string.Empty;
+            var ordinal = string.Empty;
+            foreach (KeyValuePair<double, string> label in variable.ValueLabels)
+            {
+                text = $"{text}|{label.Value}";
+                ordinal = $"{ordinal}|{label.Key}";
+            }
+
+            def.ValueText = text.Trim('|');
+            def.ValueOrdinals = ordinal.Trim('|');
+        }
+
         [TestMethod]
         [DeploymentItem(@"TestFiles\test.sav")]
         public void TestReadFile()
@@ -176,5 +231,30 @@ namespace Test.SpssLib
                 rowCount++;
             }
         }
+    }
+
+    public class ColumnDefinition
+    {
+        public string QuestionName { get; set; }
+        public string DestinationName { get; set; }
+        public string QuestionLabel { get; set; }
+        public string QuestionType { get; set; }
+        public string ByPass { get; set; }
+        public string Computed { get; set; }
+        public string PremodeledScore { get; set; }
+        public string CanBeNull { get; set; }
+        public string DataType { get; set; }
+        public string ValueOrdinals { get; set; }
+        public string AnswerRecodes { get; set; }
+        public string ValueText { get; set; }
+        public string IsDateEnd { get; set; }
+        public string IsStartDate { get; set; }
+        public string Key { get; set; }
+        public string PremodeledNotes { get; set; }
+        public string NewNotes { get; set; }
+        public string Code { get; set; }
+        public string Parameters { get; set; }
+        public string Target { get; set; }
+
     }
 }

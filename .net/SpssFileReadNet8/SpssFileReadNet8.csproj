@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <AssemblyName>spssFileRead</AssemblyName>
+    <RootNamespace>spssFileRead</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Include existing console app sources -->
+    <Compile Include="..\..\spssFileRead\**\*.cs" />
+    <Compile Remove="..\..\spssFileRead\Properties\AssemblyInfo.cs" />
+    <!-- Exclude generated and output files from the legacy project so they are not compiled into the SDK project -->
+    <Compile Remove="..\..\spssFileRead\obj\**\*.cs" />
+    <Compile Remove="..\..\spssFileRead\bin\**\*.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SpssLibNet8\SpssLibNet8.csproj" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+</Project>

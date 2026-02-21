@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net481</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <AssemblyName>SpssViewer</AssemblyName>
+    <RootNamespace>SpssViewer</RootNamespace>
+    <!-- Disable auto-generation of assembly attributes to avoid duplicates when including external sources -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SpssLib\SpssLib.csproj" />
+   <PackageReference Include="ClosedXML" Version="0.105.0" />
+  </ItemGroup>
+</Project>

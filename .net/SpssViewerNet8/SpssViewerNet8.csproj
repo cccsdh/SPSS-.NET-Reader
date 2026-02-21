@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <AssemblyName>SpssViewer</AssemblyName>
+    <RootNamespace>SpssViewer</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Include existing WPF sources and XAML from the repository -->
+    <Compile Include="..\..\SpssViewer\**\*.cs" />
+    <!-- Ensure the App.xaml from the legacy project is treated as the application definition so a Main is generated -->
+    <ApplicationDefinition Include="..\..\SpssViewer\App.xaml" />
+    <Page Include="..\..\SpssViewer\**\*.xaml" />
+    <!-- Exclude AssemblyInfo from the original project to avoid duplicate attributes -->
+    <Compile Remove="..\..\SpssViewer\Properties\AssemblyInfo.cs" />
+    <!-- Exclude generated and output files from the legacy project so they are not compiled into the SDK project -->
+    <Compile Remove="..\..\SpssViewer\obj\**\*.cs" />
+    <Compile Remove="..\..\SpssViewer\bin\**\*.cs" />
+    <Page Remove="..\..\SpssViewer\obj\**\*.xaml" />
+    <Page Remove="..\..\SpssViewer\bin\**\*.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SpssLibNet8\SpssLibNet8.csproj" />
+    <PackageReference Include="ClosedXML" Version="0.95.4" />
+  </ItemGroup>
+</Project>

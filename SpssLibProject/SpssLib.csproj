@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net40</TargetFramework>
+    <AssemblyName>SpssLib</AssemblyName>
+    <RootNamespace>SpssLib</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\SpssLib\**\*.cs" />
+  </ItemGroup>
+</Project>
