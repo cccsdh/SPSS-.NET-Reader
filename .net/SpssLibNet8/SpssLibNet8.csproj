@@ -1,8 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <AssemblyName>SpssLib</AssemblyName>
-    <RootNamespace>SpssLib</RootNamespace>
+    <AssemblyName>SpssLibNet8</AssemblyName>
+    <RootNamespace>SpssLibNet8</RootNamespace>
+    <!-- NuGet package id for the packed library -->
+    <PackageId>SpssLibNet8</PackageId>
     <!-- Disable SDK-generated assembly attributes to avoid duplicates with existing AssemblyInfo.cs in the original sources -->
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <!-- Also avoid generating the TargetFramework attribute which can be injected by the SDK -->
