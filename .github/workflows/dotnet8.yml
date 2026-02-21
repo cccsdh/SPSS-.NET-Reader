@@ -1,0 +1,39 @@
+name: Build (.NET 8)
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build-net8:
+    name: Build .NET 8 solution
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Setup .NET 8 SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Cache NuGet packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.sln', '**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Restore packages (only the .NET 8 solution)
+      run: dotnet restore SpssNet.sln
+
+    - name: Build (only .NET 8 solution)
+      run: dotnet build SpssNet.sln -c Release --no-restore
+
+    - name: Verify build output
+      run: |
+        echo "Listing built project outputs in the .net folder"
+        ls -R .net || true
